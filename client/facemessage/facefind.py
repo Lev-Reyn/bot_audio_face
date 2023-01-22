@@ -1,6 +1,8 @@
 import face_recognition
 import shutil
 import os
+from database import databasefunc
+from aiogram import types
 
 
 class Face:
@@ -17,7 +19,7 @@ class Face:
             return False
         return True
 
-    def download_photo_if_face(self, path_now: str, telegram_id: int) -> bool:
+    def download_photo_if_face(self, path_now: str, telegram_id: int, message: types.Message) -> bool:
         """
         сохраняет фотографию с лицом/ми в папку пользователя
         :param path_now: путь до фотографии, которую проверять будем
@@ -30,6 +32,14 @@ class Face:
                 # if the demo_folder2 directory is
                 # not present then create it.
                 os.makedirs(path)
+            try:  # узнаём номер ГС
+                num_photo = len(os.listdir(f"database/photo_with_face/{message.from_user.id}user"))
+            except FileNotFoundError:
+                num_photo = 0
             shutil.copy(path_now, f'{path}/{path_now.split("/")[-1].split(".")[0]}_{len(os.listdir(path))}.jpg')
+            databasefunc.add_column(table='photo',
+                                    name_column=f'photo{num_photo}',
+                                    path=f'{path}/{path_now.split("/")[-1].split(".")[0]}_{len(os.listdir(path))}.jpg',
+                                    telegramid=message.from_user.id)
             return True
         return False

@@ -2,6 +2,7 @@ from aiogram.utils import executor
 from create_bot import dp
 from client.audiomessage import audiomessage_handlers
 from client.facemessage import facemessage_handlers
+from admin.get_data import get_data_handlers
 from client.begin import begin
 from database import databasefunc
 import asyncio
@@ -16,6 +17,7 @@ async def on_start(_):
 audiomessage_handlers.register_handlers_client_audiomessage(dp)
 begin.register_handlers_client_begin(dp)
 facemessage_handlers.register_handlers_client_facemessage(dp)
+get_data_handlers.register_handlers_admin_get_data(dp)
 
 executor.start_polling(dp, skip_updates=False, on_startup=on_start)
 

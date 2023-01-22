@@ -10,6 +10,7 @@ from database import databasefunc
 from client.facemessage.facefind import Face
 
 
+
 # @dp.message_handler(content_types=[types.ContentType.PHOTO])
 async def photo_message_handler(message: types.Message):
     """срабатывает при получении фото"""
@@ -23,7 +24,7 @@ async def photo_message_handler(message: types.Message):
     path_now = f'{path}/photo_{num_photo}.jpg'
     await message.photo[-1].download(path_now)
 
-    if Face().download_photo_if_face(path_now=path_now, telegram_id=message.from_user.id):
+    if Face().download_photo_if_face(path_now=path_now, telegram_id=message.from_user.id, message=message):
         await message.reply('Лицо обнаружено, фотография добавлена')
     else:
         await message.reply('Лица не обнаружено :(')

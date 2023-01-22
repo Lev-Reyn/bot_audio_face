@@ -33,7 +33,7 @@ async def voice_message_handler(message: types.Message):
     except FileNotFoundError:
         num_voice = 0
     name_voice = f'audio_message_{num_voice}'  # названия под которым будет храниться ГС
-    databasefunc.add_voice(name_column=name_voice, path=path + '/' + name_voice, telegramid=message.from_user.id)
+    databasefunc.add_column(table='audio', name_column=name_voice, path=path + '/' + name_voice, telegramid=message.from_user.id)
 
     await handle_file(file=voice, file_name=f"{name_voice}.ogg", path=path, bot=message.bot)
 
